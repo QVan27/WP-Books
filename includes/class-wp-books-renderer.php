@@ -24,6 +24,10 @@ class WP_Books_Renderer
   {
     $books = $this->api->get_books();
 
+    $title = get_option('wp_books_title', __('Sélection de livres', 'wp-books'));
+    $intro = get_option('wp_books_intro', __('Découvrez une sélection de livres provenant du Projet Gutenberg.', 'wp-books'));
+    $title_id = wp_unique_id('wp-books-title-');
+
     ob_start();
 
     include WP_BOOKS_DIR . 'templates/books-list.php';

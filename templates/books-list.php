@@ -4,23 +4,27 @@ defined('ABSPATH') || exit;
 
 /**
  * @var array|WP_Error $books
+ * @var string $title
+ * @var string $intro
+ * @var string $title_id
  */
 ?>
 
-<section class="wp-books" aria-labelledby="wp-books-title">
+<section class="wp-books" aria-labelledby="<?php echo esc_attr($title_id); ?>">
   <div class="wp-books__header">
-    <h2 id="wp-books-title" class="wp-books__title">
-      <?php echo esc_html__('Sélection de livres', 'wp-books'); ?>
-    </h2>
+    <?php if ($title !== '') : ?>
+      <h2
+        id="<?php echo esc_attr($title_id); ?>"
+        class="wp-books__title">
+        <?php echo esc_html($title); ?>
+      </h2>
+    <?php endif; ?>
 
-    <p class="wp-books__intro">
-      <?php
-      echo esc_html__(
-        'Découvrez une sélection de livres provenant du Projet Gutenberg.',
-        'wp-books'
-      );
-      ?>
-    </p>
+    <?php if ($intro !== '') : ?>
+      <p class="wp-books__intro">
+        <?php echo esc_html($intro); ?>
+      </p>
+    <?php endif; ?>
   </div>
 
   <?php if (is_wp_error($books)) : ?>
