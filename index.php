@@ -56,6 +56,13 @@ function wp_books_enqueue_assets()
     array(),
     WP_BOOKS_VERSION
   );
+
+  wp_enqueue_script_module(
+    'wp-books',
+    WP_BOOKS_URL . 'assets/js/app.js',
+    array(),
+    WP_BOOKS_VERSION
+  );
 }
 
 add_action('wp_enqueue_scripts', 'wp_books_enqueue_assets');

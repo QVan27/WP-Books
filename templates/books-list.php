@@ -41,6 +41,27 @@ defined('ABSPATH') || exit;
 
   <?php else : ?>
 
+    <div class="wp-books__search">
+      <label
+        class="wp-books__search-label"
+        for="<?php echo esc_attr(wp_unique_id('wp-books-search-')); ?>">
+        <?php echo esc_html__('Rechercher un livre', 'wp-books'); ?>
+      </label>
+
+      <input
+        class="wp-books__search-input"
+        type="search"
+        id="<?php echo esc_attr(wp_unique_id('wp-books-search-')); ?>"
+        placeholder="<?php echo esc_attr__('Rechercher par titre...', 'wp-books'); ?>"
+        autocomplete="off">
+    </div>
+
+    <p
+      class="wp-books__search-empty"
+      hidden>
+      <?php echo esc_html__('Aucun livre ne correspond à votre recherche.', 'wp-books'); ?>
+    </p>
+
     <ul class="wp-books__list">
       <?php foreach ($books as $book) : ?>
         <li class="wp-books__item">
