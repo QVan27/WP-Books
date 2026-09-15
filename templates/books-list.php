@@ -71,7 +71,8 @@ defined('ABSPATH') || exit;
     </div>
     <p
       class="wp-books__search-empty"
-      hidden>
+      hidden
+      role="status">
       <?php echo esc_html__('Aucun livre ne correspond à votre recherche.', 'wp-books'); ?>
     </p>
     <ul class="wp-books__list wp-books__list--grid">
@@ -86,12 +87,10 @@ defined('ABSPATH') || exit;
                   loading="lazy">
               </div>
             <?php endif; ?>
-
             <div class="wp-books__content">
               <h3 class="wp-books__book-title">
                 <?php echo esc_html($book['title']); ?>
               </h3>
-
               <dl class="wp-books__metadata">
                 <?php if (!empty($book['authors'])) : ?>
                   <div class="wp-books__metadata-row">
@@ -104,7 +103,6 @@ defined('ABSPATH') || exit;
                     </dd>
                   </div>
                 <?php endif; ?>
-
                 <?php if (!empty($book['languages'])) : ?>
                   <div class="wp-books__metadata-row">
                     <dt>
@@ -116,7 +114,6 @@ defined('ABSPATH') || exit;
                     </dd>
                   </div>
                 <?php endif; ?>
-
                 <div class="wp-books__metadata-row">
                   <dt>
                     <?php echo esc_html__('Téléchargements', 'wp-books'); ?>
@@ -127,7 +124,6 @@ defined('ABSPATH') || exit;
                   </dd>
                 </div>
               </dl>
-
               <?php if (!empty($book['book_url'])) : ?>
                 <a
                   class="wp-books__link"
@@ -142,5 +138,6 @@ defined('ABSPATH') || exit;
         </li>
       <?php endforeach; ?>
     </ul>
+    <nav class="wp-books__pagination" aria-label="<?php echo esc_attr__('Pagination', 'wp-books'); ?>"></nav>
   <?php endif; ?>
 </section>
