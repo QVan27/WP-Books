@@ -13,12 +13,14 @@ export default class BooksList {
 
   bindMethods() {
     this.onSearch = this.onSearch.bind(this)
+    this.onLanguageChange = this.onLanguageChange.bind(this)
     this.onViewChange = this.onViewChange.bind(this)
     this.onPageChange = this.onPageChange.bind(this)
   }
 
   getElems() {
     this.$input = this.element.querySelector('.wp-books__search-input')
+    this.$languageSelect = this.element.querySelector('.wp-books__language-select')
     this.$list = this.element.querySelector('.wp-books__list')
     this.$items = [...this.element.querySelectorAll('.wp-books__item')]
     this.$emptyMessage = this.element.querySelector('.wp-books__search-empty')
@@ -28,6 +30,7 @@ export default class BooksList {
 
   events() {
     if (this.$input) this.$input.addEventListener('input', this.onSearch)
+    if (this.$languageSelect) this.$languageSelect.addEventListener('change', this.onLanguageChange)
 
     this.$viewButtons.forEach((button) => {
       button.addEventListener('click', this.onViewChange)
@@ -38,6 +41,15 @@ export default class BooksList {
 
   onSearch(event) {
     this.search = event.target.value.trim().toLowerCase()
+    this.currentPage = 1
+
+    this.render()
+    this.scrollToList()
+  }
+
+  onLanguageChange(event) {
+    this.language = event.target.value
+
     this.currentPage = 1
 
     this.render()
@@ -62,16 +74,15 @@ export default class BooksList {
   }
 
   getFilteredItems() {
-    if (!this.search) {
-      return this.$items
-    }
-
     return this.$items.filter((item) => {
       const title = item.querySelector('.wp-books__book-title')
 
       if (!title) return false
 
-      return title.textContent.trim().toLowerCase().includes(this.search)
+      const titleMatch = !this.search || title.textContent.trim().toLowerCase().includes(this.search)
+      const languageMatch = !this.language || item.dataset.languages?.split(',').includes(this.language)
+
+      return titleMatch && languageMatch
     })
   }
 

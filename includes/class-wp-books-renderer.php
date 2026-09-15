@@ -28,6 +28,7 @@ class WP_Books_Renderer
     $intro = get_option('wp_books_intro', __('Découvrez une sélection de livres provenant du Projet Gutenberg.', 'wp-books'));
     $title_id = wp_unique_id('wp-books-title-');
     $search_id = wp_unique_id('wp-books-search-');
+    $language_id = wp_unique_id('wp-books-language-');
 
     ob_start();
 

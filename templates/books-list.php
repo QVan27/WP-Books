@@ -8,6 +8,7 @@ defined('ABSPATH') || exit;
  * @var string $intro
  * @var string $title_id
  * @var string $search_id
+ * @var string $language_id
  */
 ?>
 
@@ -68,6 +69,37 @@ defined('ABSPATH') || exit;
           placeholder="<?php echo esc_attr__('Rechercher par titre...', 'wp-books'); ?>"
           autocomplete="off">
       </div>
+      <div class="wp-books__language">
+        <label
+          class="wp-books__language-label"
+          for="<?php echo esc_attr($language_id); ?>">
+          <?php echo esc_html__('Filtrer par langue', 'wp-books'); ?>
+        </label>
+        <select class="wp-books__language-select" id="<?php echo esc_attr($language_id); ?>">
+          <option value="">
+            <?php echo esc_html__('Toutes les langues', 'wp-books'); ?>
+          </option>
+          <?php
+          $languages = array();
+
+          foreach ($books as $book) {
+            if (!empty($book['languages'])) {
+              $languages = array_merge($languages, $book['languages']);
+            }
+          }
+
+          $languages = array_unique($languages);
+
+          sort($languages);
+          ?>
+
+          <?php foreach ($languages as $language) : ?>
+            <option value="<?php echo esc_attr($language); ?>">
+              <?php echo esc_html(strtoupper($language)); ?>
+            </option>
+          <?php endforeach; ?>
+        </select>
+      </div>
     </div>
     <p
       class="wp-books__search-empty"
@@ -77,7 +109,7 @@ defined('ABSPATH') || exit;
     </p>
     <ul class="wp-books__list wp-books__list--grid">
       <?php foreach ($books as $book) : ?>
-        <li class="wp-books__item">
+        <li class="wp-books__item" data-languages="<?php echo esc_attr(implode(',', $book['languages'])); ?>">
           <article class="wp-books__book">
             <?php if (!empty($book['cover_url'])) : ?>
               <div class="wp-books__cover">
