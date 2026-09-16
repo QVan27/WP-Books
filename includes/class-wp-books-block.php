@@ -28,6 +28,7 @@ class WP_Books_Block
       WP_BOOKS_DIR . 'blocks/books-list',
       array(
         'render_callback' => array($this->renderer, 'render'),
+        'supports' => array('autoRegister' => true)
       )
     );
   }

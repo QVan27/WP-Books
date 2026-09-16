@@ -1,13 +1,60 @@
 .wp-books {
   --size: 375;
-  --padding-container: 2rem;
+  --padding-container: 20px;
 
-  --text-14: 1.4rem;
-  --text-18: 1.8rem;
-  --text-20: 2rem;
-  --text-25: 2.5rem;
+  --text-14: 1.4em;
+  --text-18: 1.8em;
+  --text-20: 2em;
+  --text-25: 2.5em;
 
   --ease-in-out: cubic-bezier(0.86, 0, 0.07, 1);
+
+  --padding-ui: 7.5px 10px;
+  --height-ui: 40px;
+  --border-radius-ui: 5px;
+
+  font-size: calc(10 * (100vw / var(--size)));
+
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  ul,
+  ol {
+    margin: 0;
+    padding: 0;
+  }
+
+  h2,
+  h3,
+  p,
+  dl,
+  dt,
+  dd {
+    margin: 0;
+  }
+
+  img {
+    max-width: none;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  h2,
+  h3,
+  p,
+  a,
+  button,
+  input,
+  dt,
+  dd {
+    font-size: inherit;
+  }
 
   @media (min-width: 768px) {
     --size: 768;
@@ -22,16 +69,16 @@
   }
 
   width: 100%;
-  padding: var(--padding-container);
-  font-size: calc(10 * (100vw / var(--size)));
+  max-width: none;
 
   > .wp-books__header {
-    margin-bottom: 4rem;
+    margin-bottom: 40px;
 
     > .wp-books__title {
-      margin-bottom: 1rem;
+      margin-bottom: 10px;
       font-size: var(--text-25);
     }
+
     > .wp-books__intro {
       margin: 0;
       font-size: var(--text-20);
@@ -39,7 +86,7 @@
   }
 
   > .wp-books__message {
-    padding: 1rem;
+    padding: 10px;
     border: 1px solid #dcdcde;
 
     &.wp-books__message--error {
@@ -47,42 +94,165 @@
     }
   }
 
+  > .wp-books__controls {
+    display: flex;
+    flex-direction: column;
+    /* align-items: flex-end; */
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: var(--padding-container);
+
+    > .wp-books__view-switcher {
+      display: none;
+    }
+
+    .wp-books__view-button {
+      height: var(--height-ui);
+      padding: var(--padding-ui);
+      border: 1px solid #dcdcde;
+      background: #fff;
+      cursor: pointer;
+      font: inherit;
+      font-size: var(--text-14);
+      transition: background 0.3s ease-out;
+
+      &:first-child {
+        border-radius: var(--border-radius-ui) 0 0 var(--border-radius-ui);
+      }
+
+      &:last-child {
+        margin-left: -1px;
+        border-radius: 0 var(--border-radius-ui) var(--border-radius-ui) 0;
+      }
+
+      &.is-active {
+        background: #1d2327;
+        border-color: #1d2327;
+        color: #fff;
+        cursor: not-allowed;
+      }
+
+      &:focus-visible {
+        position: relative;
+        z-index: 1;
+        outline: 1px solid currentColor;
+        outline-offset: 0.2px;
+      }
+
+      @media (hover: hover) {
+        &:hover:not(.is-active) {
+          background: #f0f0f1;
+        }
+      }
+    }
+
+    > .wp-books__search {
+      flex: 1;
+
+      > .wp-books__search-label {
+        display: block;
+        margin-block-end: 5px;
+        font-size: var(--text-14);
+        font-weight: 700;
+      }
+
+      > .wp-books__search-input {
+        display: block;
+        width: 100%;
+        height: var(--height-ui);
+        padding: var(--padding-ui);
+        border: 1px solid #dcdcde;
+        border-radius: var(--border-radius-ui);
+        font-size: var(--text-14);
+
+        &:focus-visible {
+          outline: 2px solid currentColor;
+          outline-offset: 2px;
+        }
+      }
+    }
+
+    > .wp-books__language {
+      > .wp-books__language-label {
+        display: block;
+        margin-block-end: 5px;
+        font-size: var(--text-14);
+        font-weight: 700;
+      }
+
+      > .wp-books__language-select {
+        display: block;
+        height: var(--height-ui);
+        padding: var(--padding-ui);
+        border: 1px solid #dcdcde;
+        border-radius: var(--border-radius-ui);
+        background: #fff;
+        font: inherit;
+        font-size: var(--text-14);
+        cursor: pointer;
+
+        &:focus-visible {
+          outline: 1px solid currentColor;
+          outline-offset: 2px;
+        }
+      }
+    }
+  }
+
+  > .wp-books__search-empty {
+    margin-block-end: var(--padding-container);
+    padding: 10px;
+    border: 1px solid #dcdcde;
+    font-size: var(--text-14);
+    border-radius: var(--border-radius-ui);
+  }
+
   > .wp-books__list {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 30rem), 1fr));
-    gap: 2rem;
     margin: 0;
     padding: 0;
     list-style: none;
 
-    .wp-books__book {
+    &.wp-books__list--grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+
+      .wp-books__book {
+        flex-direction: column;
+      }
+    }
+
+    &.wp-books__list--list {
       display: flex;
       flex-direction: column;
+      gap: 20px;
+
+      .wp-books__book {
+        flex-direction: row;
+      }
+
+      .wp-books__cover {
+        flex: 0 0 200px;
+        width: 200px;
+      }
+    }
+
+    > .wp-books__item {
+      min-width: 0;
+    }
+
+    .wp-books__book {
+      display: flex;
       height: 100%;
       background: #fff;
-
-      > .wp-books__cover {
-        aspect-ratio: 2 / 3;
-        overflow: hidden;
-        background: #f0f0f1;
-        border-radius: 0.5rem;
-
-        > img {
-          display: block;
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-        }
-      }
 
       > .wp-books__content {
         display: flex;
         flex-direction: column;
-        flex: 1;
-        padding: 1.5rem;
+        padding: 15px;
 
         > .wp-books__book-title {
-          margin-bottom: 1rem;
+          margin-bottom: 10px;
           font-size: var(--text-18);
         }
 
@@ -90,14 +260,14 @@
           font-size: var(--text-14);
 
           > .wp-books__metadata-row {
-            margin-bottom: 1rem;
+            margin-bottom: 10px;
 
             > dt {
               font-weight: 700;
             }
 
             > dd {
-              margin-top: 0.5rem;
+              margin-top: 5px;
             }
           }
         }
@@ -108,7 +278,7 @@
           position: relative;
           width: fit-content;
           margin-top: auto;
-          padding-top: 1rem;
+          padding-top: 10px;
           font-weight: 700;
           font-size: var(--text-14);
           transition: opacity var(--timing) linear;
@@ -117,9 +287,9 @@
             content: '';
             position: absolute;
             width: 100%;
-            height: max(1px, 0.1rem);
+            height: max(1px, 0.1px);
             background-color: currentColor;
-            bottom: -0.1rem;
+            bottom: -0.1px;
             left: 0;
             transform-origin: right;
             transform: scaleX(0);
@@ -127,8 +297,8 @@
           }
 
           &:focus-visible {
-            outline: max(1px, 0.1rem) solid currentColor;
-            outline-offset: 0.4rem;
+            outline: 1px solid currentColor;
+            outline-offset: 0.4px;
           }
 
           @media (hover: hover) {
@@ -143,6 +313,102 @@
           }
         }
       }
+    }
+
+    .wp-books__cover {
+      aspect-ratio: 2 / 3;
+      overflow: hidden;
+      background: #f0f0f1;
+      border-radius: 5px;
+
+      > img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+  }
+
+  > .wp-books__pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    margin-top: var(--padding-container);
+
+    > .wp-books__pagination-button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 40px;
+      height: var(--height-ui);
+      padding: var(--padding-ui);
+      border: 1px solid #dcdcde;
+      border-radius: 5px;
+      background: #fff;
+      color: inherit;
+      font-size: var(--text-14);
+      text-decoration: none;
+      transition:
+        background-color 0.3s ease,
+        border-color 0.3s ease,
+        color 0.3s ease;
+
+      &.is-active {
+        border-color: #1d2327;
+        background: #1d2327;
+        color: #fff;
+        cursor: not-allowed;
+      }
+
+      &:focus-visible {
+        outline: 1px solid currentColor;
+        outline-offset: 2px;
+      }
+
+      @media (hover: hover) {
+        &:not(.is-active):hover {
+          background: #f0f0f1;
+        }
+      }
+    }
+  }
+
+  @media (min-width: 768px) {
+    > .wp-books__controls {
+      flex-direction: row;
+
+      > .wp-books__search {
+        max-width: 500px;
+      }
+    }
+
+    > .wp-books__list.wp-books__list--grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    > .wp-books__list.wp-books__list--grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+
+    > .wp-books__controls {
+      > .wp-books__search {
+        margin-left: auto;
+      }
+
+      > .wp-books__view-switcher {
+        display: flex;
+        align-items: flex-end;
+      }
+    }
+  }
+
+  @media (min-width: 1200px) {
+    > .wp-books__list.wp-books__list--grid {
+      grid-template-columns: repeat(5, 1fr);
     }
   }
 }

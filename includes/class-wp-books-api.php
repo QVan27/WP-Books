@@ -72,7 +72,7 @@ class WP_Books_API
 
     $books = array();
 
-    foreach (array_slice($data['results'], 0, 10) as $book) {
+    foreach (array_slice($data['results'], 0, 30) as $book) {
       $books[] = $this->normalize_book($book);
     }
 

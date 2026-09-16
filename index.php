@@ -56,6 +56,21 @@ function wp_books_enqueue_assets()
     array(),
     WP_BOOKS_VERSION
   );
+
+  wp_enqueue_script(
+    'gsap',
+    'https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js',
+    array(),
+    '3.13.0',
+    true
+  );
+
+  wp_enqueue_script_module(
+    'wp-books',
+    WP_BOOKS_URL . 'assets/js/app.js',
+    array(),
+    WP_BOOKS_VERSION
+  );
 }
 
 add_action('wp_enqueue_scripts', 'wp_books_enqueue_assets');

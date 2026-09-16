@@ -8,6 +8,9 @@ class WP_Books_Admin
   private WP_Books_API $api;
   private WP_Books_Cache $cache;
 
+  private const OPTION_TITLE = 'wp_books_title';
+  private const OPTION_INTRO = 'wp_books_intro';
+
   /**
    * @param WP_Books_API   $api   Client API.
    * @param WP_Books_Cache $cache Gestionnaire de cache.
@@ -18,8 +21,37 @@ class WP_Books_Admin
     $this->cache = $cache;
 
     add_action('admin_menu', array($this, 'register_menu'));
+    add_action('admin_init', array($this, 'register_settings'));
     add_action('admin_post_wp_books_refresh', array($this, 'refresh_books'));
     add_action('admin_post_wp_books_clear_cache', array($this, 'clear_cache'));
+  }
+
+  /**
+   * Enregistre les réglages du plugin.
+   *
+   * @return void
+   */
+  public function register_settings()
+  {
+    register_setting(
+      'wp_books_settings',
+      self::OPTION_TITLE,
+      array(
+        'type' => 'string',
+        'sanitize_callback' => 'sanitize_text_field',
+        'default' => 'Sélection de livres',
+      )
+    );
+
+    register_setting(
+      'wp_books_settings',
+      self::OPTION_INTRO,
+      array(
+        'type' => 'string',
+        'sanitize_callback' => 'sanitize_textarea_field',
+        'default' => 'Découvrez une sélection de livres provenant du Projet Gutenberg.',
+      )
+    );
   }
 
   /**
@@ -112,6 +144,9 @@ class WP_Books_Admin
     $status = isset($_GET['wp_books_status'])
       ? sanitize_key(wp_unslash($_GET['wp_books_status']))
       : '';
+
+    $title = get_option(self::OPTION_TITLE, 'Sélection de livres');
+    $intro = get_option(self::OPTION_INTRO, 'Découvrez une sélection de livres provenant du Projet Gutenberg.');
 ?>
 
     <div class="wrap">
@@ -138,6 +173,57 @@ class WP_Books_Admin
           </p>
         </div>
       <?php endif; ?>
+
+      <h2>
+        <?php echo esc_html__('Textes affichés sur le site', 'wp-books'); ?>
+      </h2>
+
+      <form method="post" action="<?php echo esc_url(admin_url('options.php')); ?>">
+        <?php settings_fields('wp_books_settings'); ?>
+
+        <table class="form-table" role="presentation">
+          <tr>
+            <th scope="row">
+              <label for="wp_books_title">
+                <?php echo esc_html__('Titre', 'wp-books'); ?>
+              </label>
+            </th>
+
+            <td>
+              <input
+                type="text"
+                id="wp_books_title"
+                name="wp_books_title"
+                value="<?php echo esc_attr($title); ?>"
+                class="regular-text">
+            </td>
+          </tr>
+
+          <tr>
+            <th scope="row">
+              <label for="wp_books_intro">
+                <?php echo esc_html__('Introduction', 'wp-books'); ?>
+              </label>
+            </th>
+
+            <td>
+              <textarea
+                id="wp_books_intro"
+                name="wp_books_intro"
+                rows="4"
+                class="large-text"><?php echo esc_textarea($intro); ?></textarea>
+            </td>
+          </tr>
+        </table>
+
+        <?php submit_button(__('Enregistrer les textes', 'wp-books')); ?>
+      </form>
+
+      <hr>
+
+      <h2>
+        <?php echo esc_html__('Gestion des livres', 'wp-books'); ?>
+      </h2>
 
       <p>
         <strong>
